@@ -1,0 +1,18 @@
+
+- hosts: all
+  remote_user: root
+  tasks:
+   #- user: name=soumya state=absent remove=yes # deleting users 
+  vars_prompt:
+  - name: "user_password"    
+    prompt: "Enter a password for the user"    
+    private: yes    
+    encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it    
+    confirm: yes    
+    salt_size: 7
+
+  - name: "user_name"
+
+  tasks:
+  - user: name="{{user_name}}" password="{{user_password}}" shell="/bin/bash" group=admin
+ 

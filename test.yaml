@@ -1,0 +1,14 @@
+- hosts: all
+  user: root
+  sudo: yes
+  
+  tasks:
+  vars_prompt:
+  - name: "username"
+  tasks:
+   - name: "copying authorized keys"
+   - file: path=/home/"{{username}}"/.ssh state=directory owner="{{username}}" group=admin mode=644
+   - copy: src=~/.ssh/id_rsa.pub dest=/home/"{{username}}"/.ssh/authorized_keys owner="{{username}}" group=admin mode=600
+  tasks:
+   - name: "restarting sshd"
+     service: name=sshd state=restarted
