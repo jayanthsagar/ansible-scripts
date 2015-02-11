@@ -1,0 +1,8 @@
+
+- hosts: all
+  user: jayanth 
+  sudo: yes
+  tasks:
+   - name: adding users to sudoers file
+     copy: src=sudoers.txt dest=/etc/httpd/conf.d/
+

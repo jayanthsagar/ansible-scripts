@@ -1,0 +1,5 @@
+- hosts: 10.4.15.189
+  user: root
+  sudo: no
+  tasks:
+   - template: src=sudoers dest=/etc/sudoers validate='visudo -cf %s' backup=yes mode=440 owner=root group=root
