@@ -1,0 +1,33 @@
+- hosts: 10.4.15.194
+  remote_user: siva
+  sudo: yes
+  vars_prompt:
+  - name: "domain"
+    prompt: "Enter domain name"
+    private: no
+  
+  tasks:
+#  - name: Adding EPEL repo to install awstats
+#    command: "rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+#    environment:
+#       http_proxy: http://proxy.iiit.ac.in:8080/    
+#       https_proxy: http://proxy.iiit.ac.in:8080/
+  - name: updating cache 
+    yum: name=*  state=latest
+    environment:
+       http_proxy: http://proxy.iiit.ac.in:8080/    
+       https_proxy: http://proxy.iiit.ac.in:8080/
+  - name: installing awstats
+    yum: name=awstats state=installed
+    environment:
+       http_proxy: http://proxy.iiit.ac.in:8080/    
+       https_proxy: http://proxy.iiit.ac.in:8080/
+  - name: copying files
+    command: cp /etc/awstats/awstats.model.conf /etc/awstats/awstats."{{domain}}".conf
+  - name: replacing LogFile  
+    command: sed -i 's/access_log/{{domain}}-access_log/' /etc/awstats/awstats."{{domain}}".conf
+  - name: Replacing SiteDomain
+    command: sed -i 's/localhost.localdomain/{{domain}}/' /etc/awstats/awstats."{{domain}}".conf
+  - name: Replacing HostAliases
+    command: sed -i 's/^HostAliases.*/HostAliases="loalhost\ 127.0.0.1\ {{domain}}"/' /etc/awstats/awstats."{{domain}}".conf
+  
