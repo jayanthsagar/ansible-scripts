@@ -1,0 +1,22 @@
+host: host on which awstats needs to be setup
+- hosts: "{{host}}"
+  remote_user: jayanth
+  sudo: yes
+
+  vars:
+    proxy_env:
+      http_proxy: http://proxy.iiit.ac.in:8080/    
+      https_proxy: http://proxy.iiit.ac.in:8080/
+  
+  tasks:
+  - name: Adding EPEL repo to install awstats
+    command: "rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+    environment: proxy_env
+       
+  - name: updating cache 
+    yum: name=*  state=latest
+    environment: proxy_env
+       
+  - name: installing awstats
+    yum: name=awstats state=installed
+    environment: proxy_env

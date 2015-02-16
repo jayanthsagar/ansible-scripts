@@ -5,7 +5,7 @@
   tasks:
    - name: installing httpd
      yum: name=httpd state=installed
-#   - name: installing lynx
-#     yum: name=lynx state=installed
-#- include: reverseproxy.yaml 
+   - name: installing lynx
+     yum: name=lynx state=installed
+- include: reverseproxy.yaml 
  

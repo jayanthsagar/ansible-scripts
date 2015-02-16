@@ -3,6 +3,6 @@
   tasks:
    - name: copying conf file of virtual hosts
      synchronize: src=virtual-labs.ac.in.conf dest=/etc/httpd/conf.d/
-   - name: starting httpd
-     service: name=httpd state=started
-   - shell: lynx test.virtual-labs.ac.in 
+   - name: restarting httpd
+     service: name=httpd state=restarted
+    

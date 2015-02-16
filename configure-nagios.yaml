@@ -1,0 +1,18 @@
+- hosts: 10.4.15.194
+  user: jayanth
+  sudo: yes
+
+  tasks:
+    - name: taking Backup
+      command: "cp /etc/nagios/objects/contacts.cfg /etc/nagios/objects/contacts.cfg.original"
+      command: "cp /etc/nagios/nagios.cfg /etc/nagios/nagios.cfg.original"
+    
+    - name: creating servers directory in /etc/nagios/
+      file: path=/etc/nagios/servers state=directory
+    
+    - name: creating cfg files for servers
+      file: path=/etc/nagios/servers/{{item}}.cfg state=touch
+      with_items: ['reverseproxy','ladp','dns']
+    
+#     name: "setting email for notifications"
+    - replace: dest=/etc/nagios/objects/contacts.cfg regexp='nagios@localhost' replace='\1alerts@vlabs.ac.in\2'
